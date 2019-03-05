@@ -6,7 +6,6 @@ import android.util.Log;
 public class serial_native {
 
     private int fd;
-    private int delay = 100;
     private static final String TAG = "serial_native";
 
     public int OpenComPort(String device) {
@@ -23,7 +22,7 @@ public class serial_native {
     }
 
     public byte[] ReadPort(int count) {
-        return readport(fd, count, delay);
+        return readport(fd, count, 100);
     }
 
     public int WritePort(byte[] buf) {
