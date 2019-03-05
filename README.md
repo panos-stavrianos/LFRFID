@@ -5,7 +5,7 @@
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![paypal](http://orbitsystems.gr/images/Donation-Buy%20me%20beer-blue.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=J73XPNMNBGX6C)
 # LFRFID
-This small library allow you to read Low-frequency 125khz RFID 
+This small library allow you to read Low-frequency 125khz RFID.
 Written in Kotlin
 
 # Setup
@@ -27,6 +27,22 @@ dependencies {
 
 # Usage
 ###### All examples are in kotlin
+Extend your class with the listener interface Reader.RFIDListener. Then implement the onNewRFID method to get the results   
+```kotlin
+override fun onNewRFID(rfid: String) {  }
+ ```
+Then register your class to the listener
+```kotlin
+val rfidReader = Reader()
+rfidReader.read(this)
+```
+Don't forget to close the reader after you done. You can override onDestroy just to be sure that the reader will definetly close when the app is terminated
+```kotlin
+rfidReader.close()
+```
+# Note
+All tests have done with Alps KT45Q. It is posible that it won't work with other devices. Feel free to contribute, especialy if you have some other device in your possession.
+
 
 # License
       Copyright (c) 2019 panos-stavrianos
