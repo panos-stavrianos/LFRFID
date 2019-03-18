@@ -21,7 +21,7 @@ allprojects {
 2. Add the dependency
 ```gradle
 dependencies {
-        implementation 'com.github.panos-stavrianos:LFRFID:1.0.1'
+        implementation 'com.github.panos-stavrianos:LFRFID:1.0.2'
 }
 ```
 
