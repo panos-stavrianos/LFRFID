@@ -6,20 +6,20 @@ import com.android.lflibs.serial_native
 import kotlin.concurrent.thread
 
 class Reader {
-    private val devCtrl: DeviceControl = DeviceControl(DEVICE_PATH)
     private var reader: Thread = thread { }
     private val nativeDev: serial_native = serial_native()
-
+    private lateinit var devCtrl: DeviceControl
     fun read(rfidListener: RFIDListener) {
         try {
+            devCtrl = DeviceControl(DEVICE_PATH)
+
             if (nativeDev.OpenComPort(SERIAL_PORT_PATH) < 0) {
-                Log.e("Reader", "Cannot open port")
+                Log.e(TAG, "Cannot open port")
                 return
             }
             startReading(rfidListener)
         } catch (e: Exception) {
-            e.printStackTrace()
-
+            Log.e(TAG, e.message)
         }
     }
 
@@ -35,7 +35,7 @@ class Reader {
                         rfidListener.onNewRFID(String(buf.copyOfRange(1, buf.size - 2)))
                 }
             } catch (e: Exception) {
-                e.printStackTrace()
+                Log.e(TAG, e.message)
             }
         }
     }
@@ -47,7 +47,7 @@ class Reader {
             devCtrl.deviceClose()
             nativeDev.CloseComPort()
         } catch (e: Exception) {
-            e.printStackTrace()
+            Log.e(TAG, e.message)
         }
     }
 
@@ -59,6 +59,7 @@ class Reader {
         private const val SERIAL_PORT_PATH = "/dev/ttyMT2"
         private const val DEVICE_PATH = "/sys/class/misc/mtgpio/pin"
         private const val BUF_SIZE = 64
+        private const val TAG = "LFRFID Reader"
     }
 
 }

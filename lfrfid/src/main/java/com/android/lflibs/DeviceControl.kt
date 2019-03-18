@@ -10,6 +10,7 @@ constructor(path: String) {
     private val ctrlFile: BufferedWriter
 
     init {
+
         val deviceName = File(path)
         ctrlFile = BufferedWriter(FileWriter(deviceName, false))    //open file
     }
