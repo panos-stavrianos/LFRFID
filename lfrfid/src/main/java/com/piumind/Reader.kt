@@ -23,7 +23,6 @@ class Reader {
         }
     }
 
-
     private fun startReading(rfidListener: RFIDListener) {
         reader = thread {
             try {
