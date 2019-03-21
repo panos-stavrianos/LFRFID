@@ -7,12 +7,12 @@ import kotlin.concurrent.thread
 
 class Reader {
     private var reader: Thread = thread { }
-    private val nativeDev: serial_native = serial_native()
+    private lateinit var nativeDev: serial_native
     private lateinit var devCtrl: DeviceControl
     fun read(rfidListener: RFIDListener) {
         try {
             devCtrl = DeviceControl(DEVICE_PATH)
-
+            nativeDev = serial_native()
             if (nativeDev.OpenComPort(SERIAL_PORT_PATH) < 0) {
                 Log.e(TAG, "Cannot open port")
                 return
