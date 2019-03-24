@@ -38,9 +38,13 @@ class Reader {
                 Thread.sleep(5)
                 nativeDev?.ClearBuffer()
                 while (!interrupt) {
-                    Log.e(TAG, "Try Reading")
 
                     val buf = nativeDev?.ReadPort(BUF_SIZE)
+                    if (buf == null)
+                        Log.e(TAG, "Try Reading: null!")
+                    else
+                        Log.e(TAG, "Try Reading: ${String(buf.copyOf())}  --  buf.size ${buf.size}")
+
                     if (buf != null && buf.size > 2) {
                         val hexMsg = String(buf.copyOfRange(1, buf.size - 2))
                         if (hexMsg.matches("-?[0-9a-fA-F]+".toRegex())) {
