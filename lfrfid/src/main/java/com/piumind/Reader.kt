@@ -49,8 +49,20 @@ class Reader {
     fun close() {
         try {
             reader.interrupt()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        try {
             devCtrl.powerOffDevice()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        try {
             devCtrl.deviceClose()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        try {
             nativeDev.CloseComPort()
         } catch (e: Exception) {
             e.printStackTrace()
