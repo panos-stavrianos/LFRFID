@@ -19,7 +19,7 @@ class Reader {
             }
             startReading(rfidListener)
         } catch (e: Exception) {
-            Log.e(TAG, e.message)
+            e.printStackTrace()
         }
     }
 
@@ -35,7 +35,7 @@ class Reader {
                         rfidListener.onNewRFID(String(buf.copyOfRange(1, buf.size - 2)))
                 }
             } catch (e: Exception) {
-                Log.e(TAG, e.message)
+                e.printStackTrace()
             }
         }
     }
@@ -47,7 +47,7 @@ class Reader {
             devCtrl.deviceClose()
             nativeDev.CloseComPort()
         } catch (e: Exception) {
-            Log.e(TAG, e.message)
+            e.printStackTrace()
         }
     }
 
