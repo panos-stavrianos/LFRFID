@@ -9,6 +9,8 @@ class Reader {
     private var reader: Thread = thread { }
     private lateinit var nativeDev: serial_native
     private lateinit var devCtrl: DeviceControl
+    private var interrupt = false
+
     fun read(rfidListener: RFIDListener) {
         try {
             devCtrl = DeviceControl(DEVICE_PATH)
@@ -19,6 +21,7 @@ class Reader {
             }
             startReading(rfidListener)
         } catch (e: Exception) {
+            close()
             e.printStackTrace()
         }
     }
@@ -29,7 +32,7 @@ class Reader {
                 devCtrl.powerOnDevice()
                 Thread.sleep(5)
                 nativeDev.ClearBuffer()
-                while (true) {
+                while (!interrupt) {
                     val buf = nativeDev.ReadPort(BUF_SIZE)
                     if (buf != null && buf.size > 2) {
                         val hexMsg = String(buf.copyOfRange(1, buf.size - 2))
@@ -41,12 +44,14 @@ class Reader {
                     }
                 }
             } catch (e: Exception) {
+                close()
                 e.printStackTrace()
             }
         }
     }
 
     fun close() {
+        interrupt = true
         try {
             reader.interrupt()
         } catch (e: Exception) {
