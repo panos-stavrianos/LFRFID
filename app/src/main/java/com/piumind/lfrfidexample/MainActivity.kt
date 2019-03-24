@@ -6,7 +6,6 @@ import com.piumind.Reader
 
 class MainActivity : AppCompatActivity(), Reader.RFIDListener {
 
-
     private var reader = Reader()
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -13,6 +13,7 @@ class Reader {
 
     fun read(rfidListener: RFIDListener) {
         try {
+            close()
             devCtrl = DeviceControl(DEVICE_PATH)
             nativeDev = serial_native()
             if (nativeDev.OpenComPort(SERIAL_PORT_PATH) < 0) {
@@ -27,6 +28,7 @@ class Reader {
     }
 
     private fun startReading(rfidListener: RFIDListener) {
+        interrupt = false
         reader = thread {
             try {
                 devCtrl.powerOnDevice()
