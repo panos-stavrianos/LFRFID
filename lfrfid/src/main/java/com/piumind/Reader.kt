@@ -33,9 +33,10 @@ class Reader {
                     val buf = nativeDev.ReadPort(BUF_SIZE)
                     if (buf != null && buf.size > 2) {
                         val hexMsg = String(buf.copyOfRange(1, buf.size - 2))
-                        if (hexMsg.matches("-?[0-9a-fA-F]+".toRegex()))
+                        if (hexMsg.matches("-?[0-9a-fA-F]+".toRegex())) {
+                            Log.e(TAG, hexMsg)
                             rfidListener.onNewRFID(hexMsg)
-                        else
+                        } else
                             Log.e(TAG, "Wrong Data")
                     }
                 }
