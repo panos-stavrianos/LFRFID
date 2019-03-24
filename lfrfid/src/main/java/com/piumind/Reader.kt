@@ -7,16 +7,16 @@ import kotlin.concurrent.thread
 
 class Reader {
     private var reader: Thread = thread { }
-    private lateinit var nativeDev: serial_native
-    private lateinit var devCtrl: DeviceControl
+    private var nativeDev: serial_native? = null
+    private var devCtrl: DeviceControl? = null
     private var interrupt = false
 
-    fun read(rfidListener: RFIDListener) {
+    fun setListener(rfidListener: RFIDListener) {
         try {
             close()
             devCtrl = DeviceControl(DEVICE_PATH)
             nativeDev = serial_native()
-            if (nativeDev.OpenComPort(SERIAL_PORT_PATH) < 0) {
+            if (nativeDev!!.OpenComPort(SERIAL_PORT_PATH) < 0) {
                 Log.e(TAG, "Cannot open port")
                 return
             }
@@ -28,14 +28,15 @@ class Reader {
     }
 
     private fun startReading(rfidListener: RFIDListener) {
-        interrupt = false
+
         reader = thread {
             try {
-                devCtrl.powerOnDevice()
+                interrupt = false
+                devCtrl?.powerOnDevice()
                 Thread.sleep(5)
-                nativeDev.ClearBuffer()
+                nativeDev?.ClearBuffer()
                 while (!interrupt) {
-                    val buf = nativeDev.ReadPort(BUF_SIZE)
+                    val buf = nativeDev?.ReadPort(BUF_SIZE)
                     if (buf != null && buf.size > 2) {
                         val hexMsg = String(buf.copyOfRange(1, buf.size - 2))
                         if (hexMsg.matches("-?[0-9a-fA-F]+".toRegex())) {
@@ -60,17 +61,17 @@ class Reader {
             e.printStackTrace()
         }
         try {
-            devCtrl.powerOffDevice()
+            devCtrl?.powerOffDevice()
         } catch (e: Exception) {
             e.printStackTrace()
         }
         try {
-            devCtrl.deviceClose()
+            devCtrl?.deviceClose()
         } catch (e: Exception) {
             e.printStackTrace()
         }
         try {
-            nativeDev.CloseComPort()
+            nativeDev?.CloseComPort()
         } catch (e: Exception) {
             e.printStackTrace()
         }

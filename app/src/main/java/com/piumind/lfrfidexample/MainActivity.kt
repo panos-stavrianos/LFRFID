@@ -11,7 +11,7 @@ class MainActivity : AppCompatActivity(), Reader.RFIDListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        reader.read(this)
+        reader.setListener(this)
     }
 
     override fun onNewRFID(rfid: String) {

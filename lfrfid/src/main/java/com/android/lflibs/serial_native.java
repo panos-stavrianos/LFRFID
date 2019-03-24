@@ -37,11 +37,11 @@ public class serial_native {
 
     private native void closeport(int fd);                            //close serial port
 
-    private native byte[] readport(int fd, int count, int delay);        //try to read number of count bytes, then return a byte array, which may be shorter than count
+    private native byte[] readport(int fd, int count, int delay);        //try to setListener number of count bytes, then return a byte array, which may be shorter than count
 
     private native int writeport(int fd, byte[] buf);                    //try to write byte array to serialport, may be failed
 
-    private native void clearportbuf(int fd);                                //clear the serialport read/write buffer
+    private native void clearportbuf(int fd);                                //clear the serialport setListener/write buffer
 
     static {
         System.loadLibrary("package");
