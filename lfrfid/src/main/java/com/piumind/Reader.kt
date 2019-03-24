@@ -12,6 +12,8 @@ class Reader {
     private var interrupt = false
 
     fun setListener(rfidListener: RFIDListener) {
+        Log.e(TAG, "Reader setListener")
+
         try {
             close()
             devCtrl = DeviceControl(DEVICE_PATH)
@@ -36,6 +38,8 @@ class Reader {
                 Thread.sleep(5)
                 nativeDev?.ClearBuffer()
                 while (!interrupt) {
+                    Log.e(TAG, "Try Reading")
+
                     val buf = nativeDev?.ReadPort(BUF_SIZE)
                     if (buf != null && buf.size > 2) {
                         val hexMsg = String(buf.copyOfRange(1, buf.size - 2))
@@ -54,9 +58,13 @@ class Reader {
     }
 
     fun close() {
+        Log.e(TAG, "Reader close")
+
         interrupt = true
         try {
             reader.interrupt()
+
+            reader.join()
         } catch (e: Exception) {
             e.printStackTrace()
         }

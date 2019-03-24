@@ -18,6 +18,16 @@ class MainActivity : AppCompatActivity(), Reader.RFIDListener {
         println(rfid)
     }
 
+    override fun onPause() {
+        reader.close()
+        super.onPause()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        reader.setListener(this)
+    }
+
     public override fun onDestroy() {
         reader.close()
         super.onDestroy()
