@@ -1,7 +1,5 @@
 package com.piumind.lfrfidexample
 
-import android.media.AudioManager
-import android.media.ToneGenerator
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.piumind.Reader
@@ -17,13 +15,10 @@ class MainActivity : AppCompatActivity(), Reader.RFIDListener {
     }
 
     override fun onNewRFID(rfid: String) {
-
-        val toneGen1 = ToneGenerator(AudioManager.STREAM_MUSIC, 100)
-        toneGen1.startTone(ToneGenerator.TONE_CDMA_PIP, 150)
         println(rfid)
     }
 
-/*    override fun onPause() {
+    override fun onPause() {
         reader.close()
         super.onPause()
     }
@@ -31,7 +26,7 @@ class MainActivity : AppCompatActivity(), Reader.RFIDListener {
     override fun onResume() {
         super.onResume()
         reader.setListener(this)
-    }*/
+    }
 
     public override fun onDestroy() {
         reader.close()
