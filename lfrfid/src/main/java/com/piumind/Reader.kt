@@ -35,6 +35,8 @@ class Reader {
                         val hexMsg = String(buf.copyOfRange(1, buf.size - 2))
                         if (hexMsg.matches("-?[0-9a-fA-F]+".toRegex()))
                             rfidListener.onNewRFID(hexMsg)
+                        else
+                            Log.e(TAG, "Wrong Data")
                     }
                 }
             } catch (e: Exception) {
