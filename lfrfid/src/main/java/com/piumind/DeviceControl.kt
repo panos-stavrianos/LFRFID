@@ -1,11 +1,14 @@
-package com.android.lflibs
+package com.piumind
 
 import java.io.BufferedWriter
 import java.io.File
 import java.io.FileWriter
 
 class DeviceControl
-constructor(path: String, private val ctrlFile: BufferedWriter = BufferedWriter(FileWriter(File(path), false))) {
+constructor(
+    path: String,
+    private val ctrlFile: BufferedWriter = BufferedWriter(FileWriter(File(path), false))
+) {
 
     @Throws(Exception::class)
     fun powerOnDevice() {

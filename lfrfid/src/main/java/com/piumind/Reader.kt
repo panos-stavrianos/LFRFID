@@ -1,13 +1,14 @@
 package com.piumind
 
+import android.serialport.SerialPortSpd
 import android.util.Log
-import com.android.lflibs.DeviceControl
-import com.android.lflibs.serial_native
 import kotlin.concurrent.thread
 
 class Reader {
     private var reader: Thread = thread { }
-    private var nativeDev: serial_native? = null
+    //private var nativeDev: serial_native? = null
+    private val nativeDev = SerialPortSpd()
+
     private var devCtrl: DeviceControl? = null
     private var interrupt = false
 
@@ -17,11 +18,8 @@ class Reader {
         try {
             close()
             devCtrl = DeviceControl(DEVICE_PATH)
-            nativeDev = serial_native()
-            if (nativeDev!!.OpenComPort(SERIAL_PORT_PATH) < 0) {
-                Log.e(TAG, "Cannot open port")
-                return
-            }
+            //nativeDev = serial_native()115200
+            nativeDev.OpenSerial(SerialPortSpd.SERIAL_TTYMT2, 0)
             startReading(rfidListener)
         } catch (e: Exception) {
             close()
@@ -36,9 +34,10 @@ class Reader {
                 interrupt = false
                 devCtrl?.powerOnDevice()
                 Thread.sleep(5)
-                nativeDev?.ClearBuffer()
+                nativeDev.clearPortBuf(nativeDev.fd)
                 while (!interrupt) {
-                    val buf = nativeDev?.ReadPort(BUF_SIZE)
+                    val buf = nativeDev.ReadSerial(nativeDev.fd, BUF_SIZE)
+
                     if (buf != null && buf.size > 2) {
                         val hexMsg = String(buf.copyOfRange(1, buf.size - 2))
                         if (hexMsg.matches("-?[0-9a-fA-F]+".toRegex())) {
@@ -77,7 +76,7 @@ class Reader {
             e.printStackTrace()
         }
         try {
-            nativeDev?.CloseComPort()
+            nativeDev.CloseSerial(nativeDev.fd)
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -88,7 +87,6 @@ class Reader {
     }
 
     companion object {
-        private const val SERIAL_PORT_PATH = "/dev/ttyMT2"
         private const val DEVICE_PATH = "/sys/class/misc/mtgpio/pin"
         private const val BUF_SIZE = 64
         private const val TAG = "LFRFID Reader"
