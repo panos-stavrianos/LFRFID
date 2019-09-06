@@ -6,19 +6,15 @@ import kotlin.concurrent.thread
 
 class Reader {
     private var reader: Thread = thread { }
-    //private var nativeDev: serial_native? = null
     private val nativeDev = SerialPortSpd()
 
     private var devCtrl: DeviceControl? = null
     private var interrupt = false
 
     fun setListener(rfidListener: RFIDListener) {
-        Log.e(TAG, "Reader setListener")
-
         try {
             close()
             devCtrl = DeviceControl(DEVICE_PATH)
-            //nativeDev = serial_native()115200
             nativeDev.OpenSerial(SerialPortSpd.SERIAL_TTYMT2, 0)
             startReading(rfidListener)
         } catch (e: Exception) {
@@ -28,7 +24,6 @@ class Reader {
     }
 
     private fun startReading(rfidListener: RFIDListener) {
-
         reader = thread {
             try {
                 interrupt = false
@@ -41,7 +36,6 @@ class Reader {
                     if (buf != null && buf.size > 2) {
                         val hexMsg = String(buf.copyOfRange(1, buf.size - 2))
                         if (hexMsg.matches("-?[0-9a-fA-F]+".toRegex())) {
-                            Log.e(TAG, hexMsg)
                             rfidListener.onNewRFID(hexMsg)
                         } else
                             Log.e(TAG, "Wrong Data")
