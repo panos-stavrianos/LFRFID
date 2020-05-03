@@ -26,10 +26,10 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation "androidx.appcompat:appcompat:1.0.2"
-    testImplementation 'junit:junit:4.12'
+    implementation "androidx.appcompat:appcompat:1.1.0"
+    testImplementation 'junit:junit:4.13'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'com.github.SpeedataG:Device:1.6.8'
+    implementation 'com.github.SpeedataG:Device:1.7.0'
 }
 repositories {
     mavenCentral()
